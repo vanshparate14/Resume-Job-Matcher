@@ -1,0 +1,189 @@
+PROFESSIONAL SUMMARY
+
+Motivated and detail-oriented Python Developer with strong knowledge of Machine Learning, data processing techniques, and SQL database management. Experienced in building intelligent applications, data-driven solutions, and automation systems using Python. Skilled in analyzing datasets, developing predictive models, and optimizing database queries. Passionate about solving real-world problems using Artificial Intelligence and scalable software solutions.
+
+TECHNICAL SKILLS
+Programming Languages
+
+Python (Advanced)
+
+SQL
+
+Basic JavaScript
+
+Machine Learning
+
+Supervised & Unsupervised Learning
+
+Classification & Regression Models
+
+Decision Trees
+
+Model Evaluation Techniques
+
+Feature Engineering
+
+Data Preprocessing
+
+Python Libraries
+
+NumPy
+
+Pandas
+
+Scikit-learn
+
+Matplotlib
+
+Seaborn
+
+TensorFlow (Basic)
+
+Data Processing
+
+Data Cleaning & Transformation
+
+Data Analysis & Visualization
+
+CSV / JSON Data Handling
+
+Text Processing (NLP Basics)
+
+Database Technologies
+
+MySQL
+
+PostgreSQL
+
+SQLite
+
+SQL Query Optimization
+
+Database Design & Normalization
+
+Tools & Technologies
+
+Git & GitHub
+
+VS Code
+
+Jupyter Notebook
+
+Linux Basics
+
+PROJECTS
+1. Intelligent Resume–Job Matching System
+
+Developed an NLP-based system using Python to match resumes with job descriptions.
+
+Implemented cosine similarity algorithm for similarity scoring.
+
+Performed text preprocessing including tokenization and stopword removal.
+
+Generated automated match percentage for recruitment assistance.
+
+Technologies: Python, NLP, Cosine Similarity
+
+2. Machine Learning Based Promotion Prediction System
+
+Built classification model using Decision Tree algorithm.
+
+Predicted employee promotion eligibility using historical data.
+
+Improved decision transparency using interpretable models.
+
+Technologies: Python, Scikit-learn, Pandas
+
+3. Data Analysis and Visualization Dashboard
+
+Processed large datasets using Pandas.
+
+Created visual insights using Matplotlib.
+
+Automated reporting workflow.
+
+Technologies: Python, Data Processing, Visualization
+
+4. Malware Behaviour Simulation Tool
+
+Simulated malware activities for cybersecurity learning.
+
+Analyzed system behavior patterns using Python scripts.
+
+Generated activity logs for analysis.
+
+Technologies: Python, System Monitoring
+
+WORK EXPERIENCE
+Python Developer Intern
+
+ABC Tech Solutions | Pune, India
+(Jan 2025 – Jun 2025)
+
+Developed Python scripts for data processing automation.
+
+Designed SQL queries for database management.
+
+Assisted in building machine learning models.
+
+Improved data retrieval performance by optimizing SQL queries.
+
+Collaborated with team using Git version control.
+
+EDUCATION
+
+Bachelor of Engineering (Computer Engineering)
+Savitribai Phule Pune University
+2022 – 2026
+
+Relevant Coursework:
+
+Machine Learning
+
+Database Management Systems
+
+Artificial Intelligence
+
+Data Structures & Algorithms
+
+CERTIFICATIONS
+
+Python for Data Science – Coursera
+
+Machine Learning Fundamentals – IBM
+
+SQL for Data Analysis – Udemy
+
+KEY STRENGTHS
+
+Analytical Thinking
+
+Problem Solving
+
+Fast Learner
+
+Team Collaboration
+
+Attention to Detail
+
+ACHIEVEMENTS
+
+Developed multiple AI-based academic projects.
+
+Built end-to-end machine learning applications using Python.
+
+Active contributor to GitHub open-source repositories.
+
+LANGUAGES
+
+English (Professional)
+
+Hindi (Fluent)
+
+Marathi (Native)
+
+DECLARATION
+
+I hereby declare that the information provided above is true to the best of my knowledge.
+
+Shantanu Parate

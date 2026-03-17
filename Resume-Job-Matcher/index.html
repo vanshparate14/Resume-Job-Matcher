@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume-Job Matcher</title>
+    <!-- PDF.js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f4f4f4; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+
+        button { background: #4CAF50; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; margin: 20px 0; }
+        button:hover { background: #45a049; }
+        input[type="file"] { background: #f9f9f9; }
+        small { display: block; margin: 5px 0; }
+        #result { margin-top: 20px; padding: 20px; background: #e8f5e8; border-radius: 5px; display: none; }
+        .score { font-size: 48px; font-weight: bold; color: #4CAF50; text-align: center; }
+        .progress { background: #ddd; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00); transition: width 0.5s; }
+        .label { font-size: 18px; margin: 10px 0; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧾 Resume-Job Matcher</h1>
+        <p>Choose resume and job files (TXT, PDF, DOCX supported) to get match score and recommendations!</p>
+        
+        <div class="section">
+<label class="label">Resume:</label>
+<input type="file" id="resumeFile" style="width:100%; margin:10px 0; padding:10px; border:1px solid #ddd; border-radius:5px;">
+            <small id="resumeStatus" style="color:#666;">Choose resume file (TXT, PDF, DOCX)</small>
+        </div>
+        
+        <div class="section">
+<label class="label">Job Description:</label>
+<input type="file" id="jobFile" style="width:100%; margin:10px 0; padding:10px; border:1px solid #ddd; border-radius:5px;">
+            <small id="jobStatus" style="color:#666;">Choose job description file (TXT, PDF, DOCX)</small>
+        </div>
+        
+        <button onclick="calculateMatch()">Calculate Match Score</button>
+        
+        <div id="result">
+            <div class="score" id="score">-</div>
+            <div class="progress">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+            <p id="message"></p>
+            <div id="recommendations" style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
+                <h4 style="margin-top: 0; color: #856404;">💡 Resume Recommendations</h4>
+                <ul id="recList" style="margin: 0;"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Port of Python matcher.py to JS
+        const stopwords = new Set(["and", "or", "the", "is", "in", "at", "of", "a", "an", "with", "for", "to"]);
+
+        function preprocess(text) {
+            // Lowercase and remove punctuation
+            text = text.toLowerCase().replace(/[^\w\s]/g, '');
+            const words = text.split(/\s+/).filter(w => w.length > 0);
+            // Remove stopwords
+            return words.filter(w => !stopwords.has(w));
+        }
+
+        function createVocabulary(doc1, doc2) {
+            const vocab = new Set([...doc1, ...doc2]);
+            return Array.from(vocab);
+        }
+
+        function termFrequency(words, vocabulary) {
+            return vocabulary.map(term => words.filter(w => w === term).length);
+        }
+
+        function cosineSimilarity(vec1, vec2) {
+            const dot = vec1.reduce((sum, a, i) => sum + a * vec2[i], 0);
+            const mag1 = Math.sqrt(vec1.reduce((sum, a) => sum + a * a, 0));
+            const mag2 = Math.sqrt(vec2.reduce((sum, b) => sum + b * b, 0));
+            return mag1 === 0 || mag2 === 0 ? 0 : dot / (mag1 * mag2);
+        }
+
+        // Setup pdf.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        async function extractText(file) {
+            const type = file.name.toLowerCase().match(/\.(txt|pdf|docx)$/i)?.[1] || 'unknown';
+            return new Promise((resolve, reject) => {
+                if (type === 'txt') {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsText(file);
+                } else if (type === 'pdf') {
+                    const reader = new FileReader();
+                    reader.onload = async () => {
+                        try {
+                            const pdf = await pdfjsLib.getDocument({data: reader.result}).promise;
+                            let text = '';
+                            for (let i = 1; i <= pdf.numPages; i++) {
+                                const page = await pdf.getPage(i);
+                                const content = await page.getTextContent();
+                                text += content.items.map(item => item.str).join(' ') + ' ';
+                            }
+                            resolve(text);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else if (type === 'docx') {
+                    const reader = new FileReader();
+                    reader.onload = async () => {
+                        try {
+                            const result = await mammoth.extractRawText({arrayBuffer: reader.result});
+                            resolve(result.value);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    reject(new Error(`Unsupported file type: ${type}. Use TXT, PDF, DOCX.`));
+                }
+            });
+        }
+
+        async function calculateMatch() {
+            const resumeFile = document.getElementById('resumeFile').files[0];
+            const jobFile = document.getElementById('jobFile').files[0];
+
+            if (!resumeFile || !jobFile) {
+                alert('Please choose both resume and job files.');
+                return;
+            }
+
+            try {
+                document.getElementById('resumeStatus').textContent = 'Extracting resume text...';
+                document.getElementById('jobStatus').textContent = 'Extracting job text...';
+                document.getElementById('result').style.display = 'none';
+
+                const [resumeText, jobText] = await Promise.all([
+                    extractText(resumeFile),
+                    extractText(jobFile)
+                ]);
+
+                document.getElementById('resumeStatus').textContent = 'Resume loaded!';
+                document.getElementById('jobStatus').textContent = 'Job loaded!';
+
+                computeNow(resumeText, jobText);
+            } catch (error) {
+                alert('Error: ' + error.message);
+                document.getElementById('resumeStatus').textContent = '';
+                document.getElementById('jobStatus').textContent = '';
+            }
+        }
+
+        function computeNow(rText, jText) {
+            const resumeWords = preprocess(rText);
+            const jobWords = preprocess(jText);
+            const vocabulary = createVocabulary(resumeWords, jobWords);
+            const resumeVec = termFrequency(resumeWords, vocabulary);
+            const jobVec = termFrequency(jobWords, vocabulary);
+            const similarity = cosineSimilarity(resumeVec, jobVec);
+            const score = Math.round(similarity * 100 * 100) / 100;
+
+            document.getElementById('score').textContent = score + '%';
+            document.getElementById('progress').style.width = score + '%';
+            document.getElementById('message').textContent = `Match Score: ${score}% - ${score > 80 ? 'Excellent fit!' : score > 60 ? 'Good fit!' : 'Needs improvement.'}`;
+            document.getElementById('result').style.display = 'block';
+
+            // Recommendations: top job keywords missing/low in resume
+            const recList = document.getElementById('recList');
+            recList.innerHTML = '';
+            const threshold = 0.1; // TF diff threshold
+            const recs = [];
+            for (let i = 0; i < vocabulary.length; i++) {
+                const term = vocabulary[i];
+                const jobTf = jobVec[i];
+                const resumeTf = resumeVec[i];
+                if (jobTf > resumeTf && (jobTf - resumeTf) > threshold) {
+                    recs.push(`${term} (job: ${jobTf}x)`);
+                }
+            }
+            recs.slice(0,5).forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = `• Add/emphasize "${rec}"`;
+                recList.appendChild(li);
+            });
+            if (recs.length === 0) {
+                const li = document.createElement('li');
+                li.textContent = 'Great match! No major gaps found.';
+                recList.appendChild(li);
+            }
+        }
+    </script>
+</body>
+</html>
