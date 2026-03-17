@@ -102,5 +102,5 @@ python matcher.py resume.txt job.txt
 ## 📄 License
 MIT - Use freely!
 
-**Made by Vansh Parate** ❤️ *using Python + Vanilla JS*
+**Made by Vansh Parate** ❤️ *using Python 
 
