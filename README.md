@@ -4,14 +4,15 @@
 
 **Intelligent Resume-Job Matching System** - Uses NLP & Cosine Similarity to score how well your resume matches a job description. CLI + Web UI. Supports TXT, PDF, DOCX.
 
-## ✨ Features
+## ✨ Features ✨
 - **Multi-format**: TXT, PDF, DOCX files
-- **Smart Scoring**: Cosine similarity with term frequency vectors
-- **Gap Analysis**: Top missing keywords + recommendations
+- **🔥 Modern Web UI**: Glassmorphism, drag-drop, dark mode, animations
+- **Smart Scoring**: Cosine similarity + animated circular gauge
+- **🎯 Gap Analysis**: Priority recommendation cards
 - **Dual Interface**:
   - CLI: `python matcher.py resume.pdf job.txt`
-  - Web: Open `index.html` in browser
-- **Fast**: Instant results, no training needed
+  - **Web Pro**: Open `index.html` (confetti on 90%+!)
+- **⚡ Instant**: Loading spinner + smooth transitions
 
 ## 📋 Quick Start
 
@@ -34,10 +35,11 @@ python matcher.py resume.txt job.txt
   • Missing 'database' (job: 1x, resume: 0x)
 ```
 
-### Web UI
+### 🌐 Modern Web UI
 1. Open `index.html` in browser
-2. Upload resume + job files
-3. Get instant score + recommendations!
+2. **Drag-drop** resume + job files
+3. **Animated score** + smart recommendations!
+4. Toggle dark mode ☾ → ☀
 
 ## 🛠 Installation
 
@@ -102,5 +104,5 @@ python matcher.py resume.txt job.txt
 ## 📄 License
 MIT - Use freely!
 
-**Made by Vansh Parate** ❤️ *using Python 
+**Made by Vansh Parate** ❤️ *using Python + HTML*
 
