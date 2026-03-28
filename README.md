@@ -2,7 +2,7 @@
 
 [![Match Score](https://img.shields.io/badge/Match%20Score-85%25-brightgreen)](https://example.com)
 
-**Intelligent Resume-Job Matching System** - Uses NLP & Cosine Similarity to score how well your resume matches a job description. CLI + Web UI. Supports TXT, PDF, DOCX.
+**Intelligent Resume-Job Matching System** - Uses NLP & Cosine Similarity to score how well your resume matches a job description and also gives recommendation. CLI + Web UI. Supports TXT, PDF, DOCX.
 
 ## ✨ STAR Anatomy
 
