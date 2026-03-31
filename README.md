@@ -1,4 +1,4 @@
-# Resume-Job Matcher 🚀
+# Resume-Job Matcher (Gives you a perfect fit)
 
 [![Match Score](https://img.shields.io/badge/Match%20Score-85%25-brightgreen)](https://example.com)
 
